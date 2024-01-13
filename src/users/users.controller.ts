@@ -1,5 +1,15 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Post, Body } from "@nestjs/common";
 import { UsersService } from "./users.service";
+import { User } from "@prisma/client";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { ApiCreatedResponse } from "@nestjs/swagger";
+import * as bycrpt from 'bcrypt'
+import { UserLoginDto } from "./dto/userlogin.dto";
+const roundsOfHashing = 10;
+
+/*
+UsersService: Holds all the functions for the service for the routes starting with "/users"
+*/
 
 @Controller("users")
 export class UsersController{
@@ -8,14 +18,29 @@ export class UsersController{
     //get one user
     @Get()
     getUser(){
-        return this.userService.getUser("Derick");
+        return this.userService.getUsers()
     }
 
-    @Get("derick")
-    getDerick(){
-        return "Derick gets all the ABGS"
+    @Post("/create")
+    async createUser(@Body() createUserDto: CreateUserDto): Promise<User>{
+        //you can access createUserDto fields
+        const hashPassword = await bycrpt.hash(createUserDto.password, roundsOfHashing);
+        createUserDto.password = hashPassword
+        return this.userService.createUser(createUserDto);
     }
 
+    @Post("/login")
+    async login(@Body() userLoginDto: UserLoginDto): Promise<string>{
+        const email = userLoginDto.email
+        const password = userLoginDto.password
+        return this.userService.authenticateUser(email,password)
+    }
+
+
+
+
+    
+    
 
     //get users followers
 
