@@ -1,5 +1,6 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Post, Body } from "@nestjs/common";
 import { PostService } from "./posts.service";
+import addPostDTO from "./dto/addPost.dto"
 
 //set the path of this route to "posts"
 /*
@@ -14,7 +15,12 @@ export class PostsController{
         return this.postService.getPosts()
     }
 
-    //
+    @Post("post")
+    addPost(@Body() addPostDTO: addPostDTO){
+        this.postService.addPost(addPostDTO)
+    }
+
+    
     
     
 }
