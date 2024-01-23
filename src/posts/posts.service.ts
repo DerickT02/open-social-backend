@@ -18,4 +18,15 @@ export class PostService{
             data:data
        })
     }
+
+    async getPostFromUser(authorId: number){
+        let allUserPost = this.prisma.post.findMany({
+            where: {
+                authorId: {
+                    equals: authorId
+                }
+            }
+        })
+        return allUserPost;
+    }
 }
