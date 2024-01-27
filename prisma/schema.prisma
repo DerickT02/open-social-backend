@@ -33,4 +33,5 @@ model Post {
   content   String[]
   authorId  Int?
   caption String
+  authorName String?
 }

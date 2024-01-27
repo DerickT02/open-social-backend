@@ -15,6 +15,8 @@ async function bootstrap() {
   .setVersion("1.0")
   .build();
 
+  app.enableCors()
+
   if (module.hot) { 
     module.hot.accept();
     module.hot.dispose(() => app.close());
