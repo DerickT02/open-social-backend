@@ -13,4 +13,7 @@ export class PostEntity implements Post{
 
     @ApiProperty()
     caption: string
+
+    @ApiProperty()
+    authorName: string
 }

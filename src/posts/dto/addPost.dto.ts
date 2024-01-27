@@ -11,4 +11,7 @@ export default class addPostDTO{
     @ApiProperty()
     caption: string
 
+    @ApiProperty()
+    authorName: string
+
 }
