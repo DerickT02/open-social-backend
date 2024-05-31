@@ -1,10 +1,13 @@
-import { Controller, Get, Post, Body } from "@nestjs/common";
+import { Controller, Get, Post, Body, ParseIntPipe, Param, } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { User } from "@prisma/client";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { ApiCreatedResponse } from "@nestjs/swagger";
+import { ApiParam } from "@nestjs/swagger";
 import * as bycrpt from 'bcrypt'
+
+import { CreateUserDto } from "./dto/create-user.dto";
+import { FollowUserDTO } from "./dto/followuser.dto";
 import { UserLoginDto } from "./dto/userlogin.dto";
+
 const roundsOfHashing = 10;
 
 /*
@@ -35,6 +38,28 @@ export class UsersController{
         const password = userLoginDto.password
         return this.userService.authenticateUser(email,password)
     }
+
+    @Get(':id')
+    @ApiParam({name: "id", required: true})
+    async getOneUser(@Param('id', ParseIntPipe) id: number){
+        return this.userService.getOneUser(id)
+    }
+
+    @Get(':id/following')
+    @ApiParam({name: "id", required: true})
+    async getFollowing(@Param('id', ParseIntPipe) id: number){
+        return this.userService.getFollowing(id)
+    }
+
+    @Post("/follow")
+    async follow(@Body() followUserDto: FollowUserDTO){
+       
+        return this.userService.followUser(followUserDto.currentUserID, followUserDto.targetUserID)
+    }
+
+
+    
+
 
 
 
